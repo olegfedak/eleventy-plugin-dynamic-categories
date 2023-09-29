@@ -13,10 +13,11 @@ itemsCollection
 
 module.exports = function(eleventyConfig, options={
   categoryVar: "categories",
-  itemCollection: "posts",
+  itemsCollection: "posts",
 }) {
     const categoryCollection = options.categoryCollection || options.categoryVar;
     const categoryVar = options.categoryVar;
+    const itemsCollection = options.itemsCollection;
     const perPageCount = options.perPageCount || 5;
 
     // Creates the collection
@@ -34,7 +35,7 @@ module.exports = function(eleventyConfig, options={
         return { 
           'title': category,
           'slug': slugify(category),
-          'posts': [ ...filteredPosts ],
+          [itemsCollection || 'posts']: [ ...filteredPosts ],
         };
       })
       console.log(`\x1b[32m[Dynamic Categories] Created Collection ${categoryCollection} with ${categoriesWithPosts.length} items`, '\x1b[0m')
@@ -65,7 +66,7 @@ module.exports = function(eleventyConfig, options={
               slug: slugify(tagName),
               title: tagName,
               totalPages,
-              posts: pagedItems[pageNumber],
+              [itemsCollection || 'posts']: pagedItems[pageNumber],
               permalinkScheme: `${slugify(tagName)}${currentNumber > 1 ? `/${currentNumber}` : ''}/index.html`,
               pages: {
                 current: currentNumber,
